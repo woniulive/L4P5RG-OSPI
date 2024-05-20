@@ -99,7 +99,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   OSPI_RegularCmdTypeDef sCommand;
-  HAL_StatusTypeDef ret;
+  HAL_StatusTypeDef ret1;
+  HAL_StatusTypeDef ret2;
 
   /* reset w25q128 ----------------------------------------------------- */
   sCommand.OperationType = HAL_OSPI_OPTYPE_COMMON_CFG;
@@ -109,28 +110,30 @@ int main(void)
   sCommand.InstructionSize = HAL_OSPI_INSTRUCTION_8_BITS;
   sCommand.InstructionDtrMode = HAL_OSPI_INSTRUCTION_DTR_DISABLE;
   sCommand.Address = 0x00;
-  sCommand.AddressMode = HAL_OSPI_ADDRESS_NONE;
-  sCommand.AddressSize = HAL_OSPI_ADDRESS_8_BITS;
+  sCommand.AddressMode = HAL_OSPI_ADDRESS_1_LINE;
+  sCommand.AddressSize = HAL_OSPI_ADDRESS_24_BITS;
   sCommand.AlternateBytes = 0;
   sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
   sCommand.AlternateBytesSize = HAL_OSPI_ALTERNATE_BYTES_8_BITS;
   sCommand.DummyCycles = 0;
   sCommand.DataMode = HAL_OSPI_DATA_NONE;
-  sCommand.NbData = 2;
+  sCommand.NbData = 0;
   sCommand.SIOOMode = HAL_OSPI_SIOO_INST_EVERY_CMD;
 
-  ret = HAL_OSPI_Command(&hospi1, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-  if (ret != HAL_OK)
+  ret1 = HAL_OSPI_Command(&hospi1, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
+  if (ret1 != HAL_OK)
   {
-      printf("flash send command reset enable, failed:%d\r\n", ret);
+      printf("flash send command reset enable, failed:%d\r\n", ret1);
   }
 
   sCommand.Instruction = 0X99;
-  ret = HAL_OSPI_Command(&hospi1, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-  if (ret != HAL_OK)
+  ret2 = HAL_OSPI_Command(&hospi1, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
+  if (ret2 != HAL_OK)
   {
-      printf("flash send command reset, failed:%d\r\n", ret);
+      printf("flash send command reset, failed:%d\r\n", ret2);
   }
+
+  printf("flash reset finished, ret1:%d,ret2:%d\r\n", ret1, ret2);
 
   /* reset aps6404Ll ----------------------------------------------------- */
   sCommand.OperationType = HAL_OSPI_OPTYPE_COMMON_CFG;
@@ -140,29 +143,31 @@ int main(void)
   sCommand.InstructionSize = HAL_OSPI_INSTRUCTION_8_BITS;
   sCommand.InstructionDtrMode = HAL_OSPI_INSTRUCTION_DTR_DISABLE;
   sCommand.Address = 0x00;
-  sCommand.AddressMode = HAL_OSPI_ADDRESS_NONE;
-  sCommand.AddressSize = HAL_OSPI_ADDRESS_8_BITS;
+  sCommand.AddressMode = HAL_OSPI_ADDRESS_1_LINE;
+  sCommand.AddressSize = HAL_OSPI_ADDRESS_24_BITS;
   sCommand.AddressDtrMode = HAL_OSPI_ADDRESS_DTR_DISABLE;
   sCommand.AlternateBytes = 0;
   sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
   sCommand.AlternateBytesSize = HAL_OSPI_ALTERNATE_BYTES_8_BITS;
   sCommand.DummyCycles = 0;
   sCommand.DataMode = HAL_OSPI_DATA_NONE;
-  sCommand.NbData = 2;
+  sCommand.NbData = 0;
   sCommand.SIOOMode = HAL_OSPI_SIOO_INST_EVERY_CMD;
 
-  ret = HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-  if (ret != HAL_OK)
+  ret1 = HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
+  if (ret1 != HAL_OK)
   {
-      printf("psram send command reset enable, failed:%d\r\n", ret);
+      printf("psram send command reset enable, failed:%d\r\n", ret1);
   }
 
   sCommand.Instruction = 0x99;
-  ret = HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-  if (ret != HAL_OK)
+  ret2 = HAL_OSPI_Command(&hospi2, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
+  if (ret2 != HAL_OK)
   {
-      printf("psram send command reset, failed:%d\r\n", ret);
+      printf("psram send command reset, failed:%d\r\n", ret2);
   }
+
+  printf("psram reset finished, ret1:%d,ret2:%d\r\n", ret1, ret2);
 
   /* USER CODE END 2 */
 
